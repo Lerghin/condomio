@@ -1,10 +1,6 @@
-
 <?php require_once('./verificar_session.php');
 
 ?>
-
-
-<?php require_once('./verificar_session.php'); ?>
 <!DOCTYPE html>
 <html>
 
@@ -148,9 +144,9 @@
 
         <!-- Formulario para buscar pagos por unidad y fecha específica -->
         <div class="search-form">
-            <form action="ver_pagos.php" method="GET">
-                <input type="text" name="unidad" class="search-input" placeholder="Buscar por unidad" value="<?php echo isset($_GET['unidad']) ? $_GET['unidad'] : ''; ?>">
-                <input type="date" name="fecha" class="date-input" value="<?php echo isset($_GET['fecha']) ? $_GET['fecha'] : ''; ?>">
+            <form action="ver_pagos.php" method="GET" onsubmit="return validarFormulario()">
+                <input type="text" name="unidad" class="search-input" placeholder="Buscar por unidad" value="<?php echo htmlspecialchars(isset($_GET['unidad']) ? $_GET['unidad'] : ''); ?>">
+                <input type="date" name="fecha" class="date-input" value="<?php echo htmlspecialchars(isset($_GET['fecha']) ? $_GET['fecha'] : ''); ?>">
                 <button type="submit" class="btn btn-secondary btn-search">Buscar</button>
             </form>
         </div>
@@ -160,7 +156,7 @@
             // Conexión a la base de datos
             require 'conection.php';
             // Consultar la deuda actual si se proporciona una unidad
-            $unidad = isset($_GET['unidad']) ? $_GET['unidad'] : '';
+            $unidad = isset($_GET['unidad']) ? $conn->real_escape_string($_GET['unidad']) : '';
 
             if ($unidad) {
                 // Consulta SQL para obtener la deuda total de la unidad específica
@@ -205,7 +201,7 @@
                 $sql .= " AND unidad = '$unidad'";
             }
 
-            $fecha = isset($_GET['fecha']) ? $_GET['fecha'] : '';
+            $fecha = isset($_GET['fecha']) ? $conn->real_escape_string($_GET['fecha']) : '';
 
             if ($fecha) {
                 $sql .= " AND fecha = '$fecha'";
@@ -219,18 +215,18 @@
                 echo "<tr><th>Unidad</th><th>Fecha</th><th>Nombre</th><th>Apellido</th><th>Cédula</th><th>Monto en USD</th><th>Monto en BS</th><th>Referencia</th><th>Tipo</th><th>Acciones</th></tr>";
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
-                    echo "<td>" . $row["unidad"] . "</td>";
-                    echo "<td>" . $row["fecha"] . "</td>";
-                    echo "<td>" . $row["nombre"] . "</td>";
-                    echo "<td>" . $row["apellido"] . "</td>";
-                    echo "<td>" . $row["cedula"] . "</td>";
-                    echo "<td>" . $row["monto"] . " USD" . "</td>";
-                    echo "<td>" . $row["monto_bs"] . "</td>";
-                    echo "<td>" . $row["referencia"] . "</td>";
-                    echo "<td>" . $row["tipo"] . "</td>";
+                    echo "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["fecha"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["nombre"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["apellido"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["cedula"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["monto"]) . " USD" . "</td>";
+                    echo "<td>" . htmlspecialchars($row["monto_bs"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["referencia"]) . "</td>";
+                    echo "<td>" . htmlspecialchars($row["tipo"]) . "</td>";
                     echo "<td>";
 
-                    echo "<a href='generar_pdf.php?id=" . $row["id"] . "' class='btn btn-secondary'>Generar PDF</a>";
+                    echo "<a href='generar_pdf.php?id=" . htmlspecialchars($row["id"]) . "' class='btn btn-secondary'>Generar PDF</a>";
                     echo "</td>";
                     echo "</tr>";
                 }
