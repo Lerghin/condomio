@@ -1,4 +1,3 @@
-
 <?php
 session_start(); // Iniciar sesión PHP
 
@@ -13,15 +12,25 @@ require 'conection.php';
 // Obtener residente_id de la sesión o de la URL
 $residente_id = isset($_SESSION['residente_id']) ? intval($_SESSION['residente_id']) : (isset($_GET['residente_id']) ? intval($_GET['residente_id']) : 0);
 
-// Consulta para obtener los datos del residente
+// Consulta para obtener los datos del residente y sus unidades
 if ($residente_id > 0) {
-    $stmt = $conn->prepare("SELECT id, nombre, apellido, unidad, telefono FROM residentes WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id, nombre, apellido, cedula, unidad, telefono FROM residentes WHERE id = ?");
     $stmt->bind_param("i", $residente_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $residente = $result->fetch_assoc();
+        // Obtener las unidades asociadas a la cédula
+        $stmtUnidades = $conn->prepare("SELECT unidad FROM residentes WHERE cedula = ?");
+        $stmtUnidades->bind_param("s", $residente['cedula']);
+        $stmtUnidades->execute();
+        $resultUnidades = $stmtUnidades->get_result();
+        $unidades = [];
+        while ($row = $resultUnidades->fetch_assoc()) {
+            $unidades[] = $row['unidad'];
+        }
+        $stmtUnidades->close();
     } else {
         $residente = null; // O manejar el caso en que no se encuentran datos
     }
@@ -181,8 +190,16 @@ $conn->close();
                         <td><?php echo htmlspecialchars($residente['apellido']); ?></td>
                     </tr>
                     <tr>
-                        <th>Unidad</th>
-                        <td><a href="ver_pagos_unidad.php?unidad=<?php echo urlencode($residente['unidad']); ?>"><?php echo htmlspecialchars($residente['unidad']); ?></a></td>
+                        <th>Cedula</th>
+                        <td><?php echo htmlspecialchars($residente['cedula']); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Unidades</th>
+                        <td>
+                            <?php foreach ($unidades as $unidad) : ?>
+                                <a href="ver_pagos_unidad.php?unidad=<?php echo urlencode($unidad); ?>"><?php echo htmlspecialchars($unidad); ?></a><br>
+                            <?php endforeach; ?>
+                        </td>
                     </tr>
                     <tr>
                         <th>Teléfono</th>
