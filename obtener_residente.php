@@ -1,6 +1,5 @@
 
 
-<?php require_once('./verificar_session.php'); ?>
 <?php
 // Conexión a la base de datos
 require 'conection.php';

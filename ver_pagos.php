@@ -257,12 +257,12 @@ verificarRol(['admin']);
         const fecha = document.querySelector('input[name="fecha"]').value;
 
         if (unidad && !/^[a-zA-Z0-9\s]+$/.test(unidad)) {
-            alert('La unidad contiene caracteres no válidos.');
+            console.error('La unidad contiene caracteres no válidos.');
             return false;
         }
 
         if (fecha && !/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
-            alert('La fecha no tiene un formato válido.');
+            console.error('La fecha no tiene un formato válido.');
             return false;
         }
 

@@ -1,6 +1,7 @@
 <?php require_once('./verificar_session.php');
 
-verificarRol(['user']);
+// Eliminar la verificación de rol específica
+verificarRol(['admin', 'user']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -154,11 +155,6 @@ verificarRol(['user']);
                     window.location.href = 'index.php';
                 }
             });
-
-
-
-
-
         });
     </script>
 </body>

@@ -395,7 +395,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if ($pagoExitoso) : ?>
             // Mostrar alerta y redirigir
-            alert('Recibo mensual agregado correctamente');
+            console.log('Recibo mensual agregado correctamente');
             window.location.href = 'ver_gastos.php';
         <?php endif; ?>
     </script>

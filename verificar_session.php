@@ -16,6 +16,10 @@ function verificarRol($rolesPermitidos) {
     }
 }
 
+// Ejemplo de uso de la función verificarRol
+// Asegúrate de incluir 'admin' en los roles permitidos si es necesario
+verificarRol(['admin', 'user']);
+
 // Función para cerrar sesión
 function logout() {
     $_SESSION = array(); // Vaciar todas las variables de sesión

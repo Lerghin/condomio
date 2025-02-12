@@ -18,7 +18,7 @@ if (empty($residente_id)) {
     $row = $check_result->fetch_assoc();
     if ($row['count'] > 0) {
         // Mostrar alerta de error porque la unidad no es única
-        echo "<script>alert('Ya está registrada la unidad');</script>";
+        echo "<script>console.error('Ya está registrada la unidad');</script>";
         echo "<script>window.location.href = 'index.php';</script>";
     } else {
         // Insertar el residente
@@ -38,7 +38,8 @@ if (empty($residente_id)) {
     }
 } else {
     // Si hay residente-id, es una actualización (editar residente)
-    $sql = "UPDATE residentes SET nombre='$nombre', apellido='$apellido', cedula='$cedula', unidad='$unidad', telefono='$telefono' WHERE id=$residente_id";
+    // Actualizar solo los campos que no afectan la restricción de clave foránea
+    $sql = "UPDATE residentes SET nombre='$nombre', apellido='$apellido', cedula='$cedula', telefono='$telefono' WHERE id=$residente_id";
 
     if ($conn->query($sql) === TRUE) {
         // Redirigir según el rol del usuario

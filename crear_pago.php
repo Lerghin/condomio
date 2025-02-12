@@ -274,7 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php if ($pagoExitoso) : ?>
             // Mostrar alerta y redirigir
-            alert('Pago Registrado exitosamente');
+            console.log('Pago Registrado exitosamente');
             window.location.href = 'ver_pagos.php';
         <?php endif; ?>
     </script>

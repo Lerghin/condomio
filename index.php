@@ -1,4 +1,3 @@
-
 <?php require_once('./verificar_session.php');
 
 verificarRol(['admin']);
@@ -204,7 +203,7 @@ verificarRol(['admin']);
     <main>
         <div class="search-form">
             <form id="search-form">
-                <input type="text" id="search" class="search-input" placeholder="Buscar por nombre, cédula o unidad">
+                <input type="text" id="search" class="search-input" placeholder="Buscar por unidad">
                 <button type="button" class="btn btn-secondary  btn-search" onclick="searchResidente()">Buscar</button>
             </form>
         </div>
@@ -235,7 +234,7 @@ verificarRol(['admin']);
                     echo "<td>" . $row["telefono"] . "</td>";
                     echo "<td>";
                     echo "<a class='btn btn-success' href='editar.php?id=" . $row["id"] . "'>Editar</a>";
-                    //echo "<button class='btn btn-danger' onclick='deleteResidente(" . $row["id"] . ")'>Eliminar</button>";
+                   // echo "<button class='btn btn-danger' onclick='deleteResidente(" . $row["id"] . ")'>Eliminar</button>";
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -293,31 +292,22 @@ verificarRol(['admin']);
         }
 
         function searchResidente() {
-            let input = document.getElementById('search');
-            let filter = input.value.toUpperCase();
+            let input = document.getElementById('search').value.toUpperCase();
             let table = document.getElementById('residentes-table');
             let tr = table.getElementsByTagName('tr');
 
             for (let i = 1; i < tr.length; i++) { // Comenzamos en 1 para omitir la fila de encabezados
-                let found = false;
-                let tds = tr[i].getElementsByTagName('td');
-                for (let j = 0; j < tds.length && !found; j++) {
-                    let td = tds[j];
-                    if (td) {
-                        let txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            found = true;
-                        }
-                    }
+                let td = tr[i].getElementsByTagName('td')[3]; // Columna de Unidad
+                if (td) {
+                    let txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toUpperCase().indexOf(input) > -1 ? '' : 'none';
                 }
-                tr[i].style.display = found ? '' : 'none';
             }
         }
        
-
         // Llamar a la función de alerta en la carga de la página
         window.onload = function() {
-            showSuccessAlert();
+            // showSuccessAlert();
         };
     </script>
 </body>
